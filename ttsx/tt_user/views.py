@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
 
-def index(request):
-    pass
+def login(request):
+    return render(request, 'tt_user/login.html')
