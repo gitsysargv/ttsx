@@ -9,6 +9,7 @@ $(function(){
 
 	$('#user_name').blur(function() {
 		check_user_name();
+		reuse_name();
 	});
 
 	$('#pwd').blur(function() {
@@ -52,6 +53,20 @@ $(function(){
 			error_name = false;
 		}
 	}
+
+	function reuse_name() {
+		var $uname = $('#user_name').val();
+		$.get('/tt_user/reuse/', {'uname': $uname}, function (data) {
+			if(data.reuse == 1 ){
+				$('#user_name').next().html('用户名已存在');
+				$('#user_name').next().show();
+				error_name = true;
+			}
+			else {
+
+			}
+        })
+    }
 
 	function check_pwd(){
 		var len = $('#pwd').val().length;
