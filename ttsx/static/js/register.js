@@ -5,6 +5,7 @@ $(function(){
 	var error_check_password = false;
 	var error_email = false;
 	var error_check = false;
+	var $drag = $('#drag');
 
 
 	$('#user_name').blur(function() {
@@ -126,8 +127,9 @@ $(function(){
 		check_cpwd();
 		check_email();
 
-		if(error_name == false && error_password == false && error_check_password == false && error_email == false && error_check == false)
+		if($('#drag').prop('Right') == "1" && error_name == false && error_password == false && error_check_password == false && error_email == false && error_check == false)
 		{
+			//alert($('#drag').prop('Right'));
 			return true;
 		}
 		else

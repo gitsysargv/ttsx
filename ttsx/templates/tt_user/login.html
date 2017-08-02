@@ -2,6 +2,17 @@
 	{%block title%}
     {{block.super}}
     {%endblock title%}
+
+	{%block link%}
+	<link rel="stylesheet" type="text/css" href="/static/css/drag.css">
+	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="/static/js/drag.js"></script>
+	<script>
+        $(function(){
+            $('#drag').drag();
+        })
+	</script>
+	{%endblock link%}
 {%block body%}
 <div class="login_top clearfix">
 		<a href="/index/" class="login_logo"><img src="/static/images/logo02.png"></a>
@@ -27,6 +38,9 @@
 							<label>记住用户名</label>
 							<a href="#">忘记密码</a>
 						</div>
+
+						<div id="drag" Right="0"></div>
+
 						<input type="submit" name="" value="登录" class="input_submit">
 					</form>
 				</div>
