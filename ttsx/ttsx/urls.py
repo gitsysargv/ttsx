@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from .index import index
 
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
     url(r'^tt_goods/', include('tt_goods.urls')),
     url(r'^tt_order/', include('tt_order.urls')),
     url(r'^tt_cart/', include('tt_cart.urls')),
+    url('^$', index),
 ]
