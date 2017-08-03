@@ -3,6 +3,10 @@ from .models import *
 from hashlib import sha1
 from django.http import JsonResponse
 
+'''
+    header_top为模板顶部显示用户信息， 登录 和注册不用显示
+'''
+
 
 def login(request):
     return render(request, 'tt_user/login.html', {'header_top': '0'})
@@ -65,7 +69,17 @@ def login_handle(request):
         upwd_sha1 = s1.hexdigest()
         if info[0].upwd != upwd_sha1:
             return render(request, 'tt_user/login.html', {'pwd_error': 1, 'upwd': upwd, 'header_top': '0'})
-    return redirect(user_path)
+
+    '''登录成功后保存一下用户信息--> id ,用户名。  而如果用户勾选记住用户名，则存一下COOKIES，'''
+    request.session['uid'] = info[0].id
+    request.session['uname'] = info[0].uname
+    remember = request.POST.get('remember', '0')
+    response = redirect(user_path)  # 用重定向也能返回response，记住响应对象，从哪里来的哪里去
+    if remember == '1':
+        response.set_cookie('remember', uname, max_age=60*60*24*3)
+    else:
+        response.set_cookie('remember', '', max_age=-1)
+    return response
 
 
 def user_center_order(request):
