@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import *
 from hashlib import sha1
 from django.http import JsonResponse
+from .decorator import logined
+u = UserInfo()
+u.save()
 
 '''
     header_top为模板顶部显示用户信息， 登录 和注册不用显示
@@ -9,7 +12,8 @@ from django.http import JsonResponse
 
 
 def login(request):
-    uname = request.COOKIES.get('remember')  # 这里取一下浏览器保存德cookie
+    # print(request.COOKIES)
+    uname = request.COOKIES.get('remember', '')  # 这里取一下浏览器保存德cookie
     return render(request, 'tt_user/login.html', {'header_top': '0', 'username': uname})
 
 
@@ -50,9 +54,43 @@ def reuse(request):
         return JsonResponse({'reuse': 0})
 
 
+@logined
 def user_center_info(request):
+    uid = request.session.get('uid')
+    uname = request.session.get('uname')
+    info = UserInfo.objects.filter(id=uid)
 
-    return render(request, 'tt_user/user_center_info.html')
+    d = {'uname': uname, 'info': info}
+    return render(request, 'tt_user/user_center_info.html', d)
+
+
+@logined
+def user_center_order(request):
+    uname = request.session.get('uname')
+
+    d = {'uname': uname}
+    return render(request, 'tt_user/user_center_order.html', d)
+
+
+@logined
+def site(request):
+    uid = request.session.get('uid')
+    uname = request.session.get('uname')
+    # info = UserInfo.objects.filter(id=uid)
+    '''这里save不成功 , 得用上filter'''
+    info = UserInfo.objects.get(id=uid)
+
+
+    '''当有POST请求时进行用户数据的保存'''
+    if request.method == 'POST':
+        info.name = request.POST.get('name')
+        info.addr = request.POST.get('addr')
+        info.phone = request.POST.get('phone')
+        info.save()  # 记住要保存，用save()
+
+
+    d = {'uname': uname, 'info': info}
+    return render(request, 'tt_user/user_center_site.html', d)
 
 
 def login_handle(request):
