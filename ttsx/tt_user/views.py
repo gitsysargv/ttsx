@@ -9,7 +9,8 @@ from django.http import JsonResponse
 
 
 def login(request):
-    return render(request, 'tt_user/login.html', {'header_top': '0'})
+    uname = request.COOKIES.get('remember')  # 这里取一下浏览器保存德cookie
+    return render(request, 'tt_user/login.html', {'header_top': '0', 'username': uname})
 
 
 def handle(request):
