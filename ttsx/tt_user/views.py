@@ -97,6 +97,7 @@ def login_handle(request):
     user_path = request.session.get('user-path', '/')  # 取出session里边存储的前一次路径
     uname = request.POST.get('username')
     upwd = request.POST.get('pwd')
+    print(uname)
 
     info = UserInfo.objects.filter(uname=uname)
     if len(info) == 0:
