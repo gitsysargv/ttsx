@@ -52,7 +52,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'ttsx.mideware.MidWare',
+    'ttsx.mideware.MidWare',  # 保存用户之前浏览的路径的 中间件
 )
 
 ROOT_URLCONF = 'ttsx.urls'

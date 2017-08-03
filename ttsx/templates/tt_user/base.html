@@ -11,22 +11,28 @@
     {%endblock link%}
 </head>
 <body>
-{%block body%}
-{%endblock body%}
 
+{# 判断是否显示顶部的登陆信息 #}
 {%if header_top|default:'1' == '1' %}
 <div class="header_con">
 		<div class="header">
 			<div class="welcome fl">欢迎来到天天生鲜!</div>
 			<div class="fr">
-				<div class="login_info fl">
-					欢迎您：<em>{{uname}}</em>
+                {# 给登陆状态做一个判断 #}
+                {% if request.session.uid %}
+				<div class="login_btn fl">
+                    <a href='/tt_user/logout/'>退出</a>
+					<span>|</span>
+					欢迎您：<em>{{request.session.uname}}</em>
 				</div>
+                {% else %}
 				<div class="login_btn fl">
 					<a href='/tt_user/login/'>登录</a>
 					<span>|</span>
 					<a href='/tt_user/register/'>注册</a>
 				</div>
+                    {% endif %}
+
 				<div class="user_link fl">
 					<span>|</span>
 					<a href='/tt_user/'>用户中心</a>
@@ -40,6 +46,9 @@
 	</div>
 
 {%endif%}
+
+{%block body%}
+{%endblock body%}
 
 <div class="footer no-mp">
 		<div class="foot_link">
