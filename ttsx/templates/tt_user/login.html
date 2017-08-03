@@ -7,9 +7,68 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/drag.css">
 	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript" src="/static/js/drag.js"></script>
+<script>
+	$(function () {
+		var $name_input = $('.name_input');  // 获取用户名
+		var $pass_input = $('.pass_input');  // 获取密码
+		var $drag = $('#drag');  // 获取验证码
+		var $form_input = $('.form_input');  // 获取表单
+
+		var b_name = false;
+		var b_pass = false;
+
+		$name_input.blur(function () {
+			if($name_input.val().length<5 || $name_input.val().length>20){
+			    $name_input.next().html('格式有误！');
+			    $name_input.next().show();
+				b_name = false;
+			}
+			else {
+			    $name_input.next().hide();
+			    b_name = true;
+			}
+        })
+
+		$pass_input.blur(function () {
+			if($pass_input.val().length<8 || $pass_input.val().length>20){
+			    $pass_input.next().html('格式有误！');
+			    $pass_input.next().show();
+				b_pass = false;
+			}
+			else {
+			    $pass_input.next().hide();
+			    b_pass = true;
+			}
+        })
+
+		$form_input.submit(function () {
+		    $name_input.blur();  // 这里需要做一次blur事件，因为submit事件不会触发blur事件。。。坑啊
+		    $pass_input.blur();
+		    if (b_name==false || b_pass == false || $drag.prop('Right') == '0'){
+		        alert($drag.prop('Right'));
+		        return false;
+			}
+			else {
+		        alert($drag.prop('Right'));
+			    return true;
+			}
+        })
+
+    })
+</script>
+
 	<script>
         $(function(){
+
             $('#drag').drag();
+            if ( '{{user_error}}' == 1){
+                $('.user_error').html('用户名错误').show();
+			}
+
+            if ( '{{pwd_error}}' == 1){
+                $('.pwd_error').html('密码错误').show();
+			}
+
         })
 	</script>
 	{%endblock link%}
@@ -28,10 +87,14 @@
 					<a href="/tt_user/register/">立即注册</a>
 				</div>
 				<div class="form_input">
-					<form>
-						<input type="text" name="username" class="name_input" placeholder="请输入用户名">
+					<form action="/tt_user/login_handle/" method="post">
+						{%csrf_token%}
+						<input type="text" name="username" class="name_input" value="{{username}}"
+                               placeholder="请输入用户名">
 						<div class="user_error">输入错误</div>
-						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
+
+						<input type="password" name="pwd" class="pass_input" value="{{upwd}}"
+                               placeholder="请输入密码">
 						<div class="pwd_error">输入错误</div>
 						<div class="more_input clearfix">
 							<input type="checkbox" name="">
@@ -41,7 +104,7 @@
 
 						<div id="drag" Right="0"></div>
 
-						<input type="submit" name="" value="登录" class="input_submit">
+						<input type="submit" value="登录" class="input_submit">
 					</form>
 				</div>
 			</div>

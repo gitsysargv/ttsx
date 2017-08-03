@@ -14,6 +14,33 @@
 {%block body%}
 {%endblock body%}
 
+{%if header_top|default:'1' == '1' %}
+<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+				<div class="login_info fl">
+					欢迎您：<em>张 山</em>
+				</div>
+				<div class="login_btn fl">
+					<a href='/tt_user/login/'>登录</a>
+					<span>|</span>
+					<a href='/tt_user/register/'>注册</a>
+				</div>
+				<div class="user_link fl">
+					<span>|</span>
+					<a href='/tt_user/'>用户中心</a>
+					<span>|</span>
+					<a href="/tt_cart/">我的购物车</a>
+					<span>|</span>
+					<a href='/tt_user/user_center_order/'>我的订单</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{%endif%}
+
 <div class="footer no-mp">
 		<div class="foot_link">
 			<a href="#">关于我们</a>
