@@ -1,0 +1,65 @@
+{% extends 'tt_goods/goods-base.html' %}
+
+
+    {% block breadcrumb %}
+    {# 经过对比 这里和detail页面不一样 #}
+	<div class="breadcrumb">
+		<a href="#">全部分类</a>
+		<span>></span>
+		<a href="#">{{ type.ttitle }}</a>
+	</div>
+    {% endblock breadcrumb %}
+
+    {% block r_wrap %}
+{#	<div class="main_wrap clearfix">#}
+
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				<a href="/list/{{ type.id }}_1_1" class="active">默认</a>
+				<a href="/list/{{ type.id }}_1_2">价格</a>
+				<a href="/list/{{ type.id }}_1_3">人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix">
+                {% for goods in page_list %}
+				<li>
+					<a href="/{{ goods.id }}/"><img src="/static/{{ goods.gpic }}"></a>
+					<h4><a href="/{{ goods.id }}/">{{ goods.gtitle }}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{ goods.gprice }}</span>
+						<span class="unit">{{ goods.gunit }}</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+                {% endfor %}
+
+			</ul>
+
+			<div class="pagenation">
+                {# 有上一页才显示 #}
+                {% if page_list.has_previous %}
+                    <a href="/list/{{ type.id }}_1_{{ order_by }}">首页</a>
+                    <a href="/list/{{ type.id }}_{{ index|add:-1}}_{{ order_by }}">上一页</a>
+                {% endif %}
+
+            {# 循环列出页面下标 #}
+                {% for sub in range %}
+                    {% if sub == index %}
+                        <a href="#">{{ sub }}</a>
+                        {% else %}
+                        <a href="/list/{{ type.id }}_{{ sub }}_{{ order_by }}">{{ sub }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_list.has_next %}
+                    <a href="/list/{{ type.id }}_{{ index|add:1}}_{{ order_by }}">下一页</a>
+                    <a href="/list/{{ type.id }}_{{ page_bottom }}_{{ order_by }}">末页</a>
+                {% endif %}
+
+{#				<a href="#"><上一页</a>#}
+{#				<a href="#" class="active">1</a>#}
+{#				<a href="#">下一页></a>#}
+			</div>
+		</div>
+{#	</div>#}
+    {% endblock r_wrap %}

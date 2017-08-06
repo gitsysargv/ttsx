@@ -15,9 +15,12 @@ def login(request):
 
 
 '''退出视图，重定向到登陆页面'''
+
+
 def logout(request):
     request.session.flush()
     return redirect('/tt_user/login/')
+
 
 def handle(request):
     d = request.POST
@@ -94,17 +97,7 @@ def site(request):
 
 
 def login_handle(request):
-    '''
-    经过测试发现，这里的重定向有问题，第一次的路径是'/tt_user/login_handle/'处理完后又重定向到
-     '/tt_user/login_handle/' 相当于又回来了。。。。。。
-    '''
 
-    user_path = request.session.get('user-path', '/')  # 取出session里边存储的前一次路径
-    if user_path == '/tt_user/login_handle/':
-        user_path = '/tt_user/'
-    # print('222222222222222')
-    # print(user_path)
-    # print('1111111111111111111')
     if request.method == 'POST':
         uname = request.POST.get('username')
         upwd = request.POST.get('pwd')
@@ -121,7 +114,6 @@ def login_handle(request):
         s1.update(upwd.encode())
         upwd_sha1 = s1.hexdigest()
         if info[0].upwd != upwd_sha1:
-
             return render(request, 'tt_user/login.html', {'pwd_error': 1, 'upwd': upwd, 'header_top': '0'})
 
     '''登录成功后保存一下用户信息--> id ,用户名。  而如果用户勾选记住用户名，则存一下COOKIES，'''
@@ -129,17 +121,19 @@ def login_handle(request):
     request.session['uname'] = info[0].uname
     remember = request.POST.get('remember', '0')
 
+    user_path = request.session.get('user-path', '/')  # 取出session里边存储的前一次路径
+    # print(user_path)
+    '''
+        1-->  经过测试发现，这里的重定向有问题，第一次的路径是'/tt_user/login_handle/'处理完后又重定向到
+           '/tt_user/login_handle/' 相当于又回来了。。。。。。
+        2-->后来看老师代码发现可以在中间件里边进行判断。。。怎么就没想到
+     '''
+    if user_path == '/tt_user/login_handle/':
+        user_path = '/tt_user/'
+
     response = redirect(user_path)  # 用重定向也能返回response，记住响应对象，从哪里来的哪里去
     if remember == '1':
-        response.set_cookie('remember', uname, max_age=60*60*24*3)
+        response.set_cookie('remember', uname, max_age=60 * 60 * 24 * 3)
     else:
         response.set_cookie('remember', '', max_age=-1)
     return response
-
-
-def user_center_order(request):
-    pass
-
-
-def user_center_site(request):
-    pass

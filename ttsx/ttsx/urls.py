@@ -17,12 +17,13 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from .index import index
 
-
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^tt_user/', include('tt_user.urls')),
     url(r'^tt_goods/', include('tt_goods.urls')),
     url(r'^tt_order/', include('tt_order.urls')),
     url(r'^tt_cart/', include('tt_cart.urls')),
-    url('^$', index),
+    url(r'^tinymce/', include('tinymce.urls')),
+    url('^', include('tt_goods.urls')),
+    # url(r'^search/', include('haystack.urls')),
 ]

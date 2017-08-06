@@ -41,6 +41,9 @@ INSTALLED_APPS = (
     'tt_goods',
     'tt_order',
     'tt_user',
+    'tinymce',
+    'haystack',
+    'common',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -94,9 +97,9 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-Hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -109,4 +112,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/'),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/'), ]
+MEDIA_ROOT = os.path.join(BASE_DIR, "static")
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'advanced',
+    'width': 600,
+    'height': 400,
+}
+# haystack搜索框架设置，引擎用whoosh，索引保存在当前项目的 whoosh_index
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        #使用whoosh引擎
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+        #索引文件路径
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    }
+}
+# 当添加、修改、删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 12  # 搜索，表示一页显示多少
